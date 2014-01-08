@@ -1,0 +1,22 @@
+#!/bin/sh
+set +vx
+if test ! \( $# -eq 1 -o $# -eq 3 \)
+then
+	echo "Usage $0 hosturl [user passwd]" >&2
+	exit 1
+fi
+HOST="$1"
+URL="$HOST/admin/dsdump"
+if test $# -gt 1
+then
+	EMAIL=$2
+	PW=$3
+	eval `curl -s myAuthFile.txt -d Email=$EMAIL -d Passwd=$PW -d accountType=GOOGLE -d service=ah -d source=dsdump https://www.google.com/accounts/ClientLogin`
+	set -- `curl -c - --output /dev/null -s "$HOST/_ah/login?auth=$Auth" | grep -v '^# ' |grep -v '^$'`
+	AUTHCOOKIE="$6"
+	AUTHVAL="$7"
+else
+	AUTHCOOKIE="dev_appserver_login"
+	AUTHVAL="test@example.com:True:1"
+fi
+curl -s -L -H "Cookie: $AUTHCOOKIE=$AUTHVAL" "$URL"
