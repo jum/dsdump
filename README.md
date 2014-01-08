@@ -13,7 +13,7 @@ This will initialize an HTTP handler for /admin/dsdump in your app engine app. Y
 
 The two shell scripts named dsdump and dsrestore in the scripts folder can be used to dump and restore data from the server. Use at follows for a local development server:
 
-	dsdump http://localhost:8080 >data.json
+	dsdump http://localhost:8080 >data.gob
 
 or add admin email and password for a real appengine instance:
 
